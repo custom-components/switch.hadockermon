@@ -17,7 +17,7 @@ hadockermon:
 ```
 **Configuration variables::**  
 key | description  
-:---|:---  
+:--- | :---  
 **host (Required)** | The IP address of your Docker host.  
 **platform (Required)** | The platform name.  
 **exclude (Optional)** | A list of Docker containers you want to exclude.  
