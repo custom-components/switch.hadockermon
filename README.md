@@ -23,6 +23,7 @@ key | description
 **exclude (Optional)** | A list of Docker containers you want to exclude.  
 **port (Optional)** | The port that the service is exposed on.  
 **stats (Optional)** | Show memory and network usage of the containers, this does _not_ work on every docker host.  
+|  
 #### Sample overview
 ![Sample overview](overview.png)
   
