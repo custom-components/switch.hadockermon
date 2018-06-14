@@ -1,6 +1,5 @@
 # Custom_component for [ha-dockermon](https://github.com/philhawthorne/ha-dockermon)
-![Version](https://img.shields.io/badge/version-2.0.1-green.svg?style=for-the-badge)
-  
+![Version](https://img.shields.io/badge/version-2.0.1-green.svg?style=for-the-badge)![mantained](https://img.shields.io/maintenance/2.0.1/2018.svg?style=for-the-badge)  
 A custom component which allows you to interact with [ha-dockermon.](https://github.com/philhawthorne/ha-dockermon)
   
 To get started put `/custom_components/hadockermon.py` here:
