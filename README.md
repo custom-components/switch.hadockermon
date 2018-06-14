@@ -21,11 +21,6 @@ hadockermon:
 **exclude (Optional)**: null  
 **port (Optional)**: null  
 **stats (Optional)**: null  
-**host (Required)**: null  
-**platform (Required)**: null  
-**exclude (Optional)**: null  
-**port (Optional)**: null  
-**stats (Optional)**: null  
 #### Sample overview
 ![Sample overview](overview.png)
   
