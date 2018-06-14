@@ -15,17 +15,22 @@ hadockermon:
   port: 8126
   stats: true
 ```
-**Configuration variables::**
-**exclude: 
-(Optional):**: 
-**host: 
-(Required):**: 
-**platform: 
-(Required):**: 
-**port: 
-(Optional):**: 
-**stats: 
-(Optional):**: 
+**Configuration variables::**  
+**exclude**: null  
+**#**:   
+**Optional:**:   
+**host**: null  
+**#**:   
+**Required:**:   
+**platform**: null  
+**#**:   
+**Required:**:   
+**port**: null  
+**#**:   
+**Optional:**:   
+**stats**: null  
+**#**:   
+**Optional:**:   
 #### Sample overview
 ![Sample overview](overview.png)
   
