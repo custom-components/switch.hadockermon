@@ -16,21 +16,16 @@ hadockermon:
   stats: true
 ```
 **Configuration variables::**  
-**exclude**: null  
-**#**:   
-**Optional:**:   
-**host**: null  
-**#**:   
-**Required:**:   
-**platform**: null  
-**#**:   
-**Required:**:   
-**port**: null  
-**#**:   
-**Optional:**:   
-**stats**: null  
-**#**:   
-**Optional:**:   
+**host (Required)**: null  
+**platform (Required)**: null  
+**exclude (Optional)**: null  
+**port (Optional)**: null  
+**stats (Optional)**: null  
+**host (Required)**: null  
+**platform (Required)**: null  
+**exclude (Optional)**: null  
+**port (Optional)**: null  
+**stats (Optional)**: null  
 #### Sample overview
 ![Sample overview](overview.png)
   
