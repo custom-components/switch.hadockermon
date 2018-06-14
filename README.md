@@ -16,11 +16,11 @@ hadockermon:
   stats: true
 ```
 **Configuration variables::**  
-**host (Required)**: null  
-**platform (Required)**: null  
-**exclude (Optional)**: null  
-**port (Optional)**: null  
-**stats (Optional)**: null  
+**host (Required)** | The IP address of your Docker host.  
+**platform (Required)** | The platform name.  
+**exclude (Optional)** | A list of Docker containers you want to exclude.  
+**port (Optional)** | The port that the service is exposed on.  
+**stats (Optional)** | Show memory and network usage of the containers, this does _not_ work on every docker host.  
 #### Sample overview
 ![Sample overview](overview.png)
   
