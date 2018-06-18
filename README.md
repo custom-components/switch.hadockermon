@@ -30,3 +30,7 @@ key | description
 [Home-Assistant demo site.](https://ha-test-hadcokermon.halfdecent.io/)
   
 To start using this make sure you have [ha-dockermon](https://github.com/philhawthorne/ha-dockermon) running.  
+push_github:  stage: deploy
+  script:
+    - curl -sL https://gitlab.com/ludeeus/toolbox/raw/master/CI-Scripts/push_to_public_repo/init.sh | bash -s github pip-packages  /root
+    - curl -sL https://gitlab.com/ludeeus/toolbox/raw/master/CI-Scripts/push_to_public_repo/push.sh | bash -s Europe/Oslo
