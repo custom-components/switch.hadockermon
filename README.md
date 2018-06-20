@@ -1,13 +1,13 @@
 # Custom_component for [ha-dockermon](https://github.com/philhawthorne/ha-dockermon)
-![Version](https://img.shields.io/badge/version-2.0.1-green.svg?style=for-the-badge) ![mantained](https://img.shields.io/maintenance/yes/2018.svg?style=for-the-badge)   
+![Version](https://img.shields.io/badge/version-2.0.0-green.svg?style=for-the-badge) ![mantained](https://img.shields.io/maintenance/yes/2018.svg?style=for-the-badge)   
 A custom platform which allows you to interact with [ha-dockermon.](https://github.com/philhawthorne/ha-dockermon)
   
-To get started put `/custom_components/hadockermon.py` here:
-`<config directory>/custom_components/hadockermon.py`  
+To get started put `/custom_components/switch/hadockermon.py` here:
+`<config directory>/custom_components/switch/hadockermon.py`  
   
 **Example configuration.yaml:**
 ```yaml
-hadockermon:
+switch:
   platform: hadockermon
   host: 192.168.1.50
   port: 8126
@@ -23,9 +23,6 @@ key | description
 **port (Optional)** | The port that the service is exposed on.  
 **stats (Optional)** | Show memory and network usage of the containers, this does _not_ work on every docker host.  
 **exclude (Optional)** | A list of Docker containers you want to exclude.  
-  
-#### Sample overview
-![Sample overview](overview.png)
   
 [Home-Assistant demo site.](https://ha-test-hadcokermon.halfdecent.io/)
   
