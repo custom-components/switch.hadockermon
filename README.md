@@ -8,11 +8,6 @@ To get started put `/custom_components/switch/hadockermon.py` here:
 **Example configuration.yaml:**
 ```yaml
 switch:
-  platform: hadockermon
-  host: 192.168.1.50
-  port: 8126
-  stats: true
-  exclude: 'NGINX', 'ha-dockermon'
 ```
 **Configuration variables:**  
   
