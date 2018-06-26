@@ -30,4 +30,4 @@ key | description
   
 To start using this make sure you have [ha-dockermon](https://github.com/philhawthorne/ha-dockermon) running.  
   
-Due to how  are importerd, it is normal to see a  error on first boot after adding this, to resolve it, restart Home-Assistant.
+Due to how `custom_componentes` are importerd, it is normal to see a `ModuleNotFoundError` error on first boot after adding this, to resolve it, restart Home-Assistant.
