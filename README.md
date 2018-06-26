@@ -29,3 +29,5 @@ key | description
 [Home-Assistant demo site.](https://ha-test-hadcokermon.halfdecent.io/)
   
 To start using this make sure you have [ha-dockermon](https://github.com/philhawthorne/ha-dockermon) running.  
+  
+Due to how  are importerd, it is normal to see a  error on first boot after adding this, to resolve it, restart Home-Assistant.
