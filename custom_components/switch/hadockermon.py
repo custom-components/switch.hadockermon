@@ -19,6 +19,7 @@ REQUIREMENTS = ['pydockermon==0.0.1']
 CONF_HOST = 'host'
 CONF_PORT = 'port'
 CONF_STATS = 'stats'
+CONF_PREFIX = 'prefix'
 CONF_EXCLUDE = 'exclude'
 
 ATTR_STATUS = 'status'
@@ -28,12 +29,13 @@ ATTR_RX_TOTAL = 'network_rx_total'
 ATTR_TX_TOTAL = 'network_tx_total'
 ATTR_COMPONENT = 'component'
 ATTR_COMPONENT_VERSION = 'component_version'
+ATTR_FRIENDLY_NAME = 'friendly_name'
 
 SCAN_INTERVAL = timedelta(seconds=60)
 
 ICON = 'mdi:docker'
 COMPONENT_NAME = 'hadockermon'
-COMPONENT_VERSION = '2.0.0'
+COMPONENT_VERSION = '2.0.1'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -41,6 +43,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
     vol.Optional(CONF_PORT, default='8126'): cv.string,
     vol.Optional(CONF_STATS, default='False'): cv.string,
+    vol.Optional(CONF_PREFIX, default='None'): cv.string,
     vol.Optional(CONF_EXCLUDE, default=None): 
         vol.All(cv.ensure_list, [cv.string]),
 })
@@ -52,21 +55,25 @@ def setup_platform(hass, config, add_devices_callback, discovery_info=None):
     port = config.get(CONF_PORT)
     exclude = config.get(CONF_EXCLUDE)
     stats = config.get(CONF_STATS)
+    prefix = config.get(CONF_PREFIX)
     dev = []
     containers = dm.listContainers(host)
     if containers:
         for container in containers:
             containername = container['Names'][0][1:]
-            if containername not in exclude:
+            if containername in exclude:
                 dev.append(ContainerSwitch(containername, 
-                    False, stats, host, port , dm))
+                    False, stats, host, port , dm, prefix))
         add_devices_callback(dev, True)
     else:
         return False
 
 class ContainerSwitch(SwitchDevice):
-    def __init__(self, name, state, stats, host, port, dm):
+    def __init__(self, name, state, stats, host, port, dm, prefix):
+        _slow_reported = True
+        entity_id = 'hadockermon_' + name
         self._dm = dm
+        self._prefix = prefix
         self._state = False
         self._name = name
         self._stats = stats
@@ -125,7 +132,10 @@ class ContainerSwitch(SwitchDevice):
 
     @property
     def name(self):
-        return self._name
+        if self._prefix == 'None':
+            return self._name
+        else:
+            return self._prefix + '_' + self._name
 
     @property
     def icon(self):
