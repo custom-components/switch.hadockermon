@@ -11,7 +11,8 @@ import homeassistant.helpers.config_validation as cv
 from time import sleep
 from datetime import timedelta
 from homeassistant.core import ServiceCall
-from homeassistant.components.switch import (SwitchDevice, 
+from homeassistant.util import slugify
+from homeassistant.components.switch import (SwitchDevice,
     PLATFORM_SCHEMA, ENTITY_ID_FORMAT)
 
 REQUIREMENTS = ['pydockermon==0.0.1']
@@ -61,8 +62,8 @@ def setup_platform(hass, config, add_devices_callback, discovery_info=None):
     if containers:
         for container in containers:
             containername = container['Names'][0][1:]
-            if containername in exclude:
-                dev.append(ContainerSwitch(containername, 
+            if containername not in exclude:
+                dev.append(ContainerSwitch(containername,
                     False, stats, host, port , dm, prefix))
         add_devices_callback(dev, True)
     else:
@@ -71,9 +72,8 @@ def setup_platform(hass, config, add_devices_callback, discovery_info=None):
 class ContainerSwitch(SwitchDevice):
     def __init__(self, name, state, stats, host, port, dm, prefix):
         _slow_reported = True
-        entity_id = 'hadockermon_' + name
+        self.entity_id = ENTITY_ID_FORMAT.format(slugify(prefix + name))
         self._dm = dm
-        self._prefix = prefix
         self._state = False
         self._name = name
         self._stats = stats
@@ -132,10 +132,7 @@ class ContainerSwitch(SwitchDevice):
 
     @property
     def name(self):
-        if self._prefix == 'None':
-            return self._name
-        else:
-            return self._prefix + '_' + self._name
+        return self._name
 
     @property
     def icon(self):
