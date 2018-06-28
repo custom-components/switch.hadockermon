@@ -36,7 +36,7 @@ SCAN_INTERVAL = timedelta(seconds=60)
 
 ICON = 'mdi:docker'
 COMPONENT_NAME = 'hadockermon'
-COMPONENT_VERSION = '2.0.1'
+COMPONENT_VERSION = '2.0.2'
 
 _LOGGER = logging.getLogger(__name__)
 
