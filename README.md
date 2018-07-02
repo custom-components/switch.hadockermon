@@ -31,8 +31,6 @@ key | description
 **prefix (Optional)** | A string that will prefix the entity name, for easy sort and grouping.  
 **exclude (Optional)** | A list of Docker containers you want to exclude.  
   
-[Home-Assistant demo site.](https://ha-test-hadcokermon.halfdecent.io/)
-  
 To start using this make sure you have [ha-dockermon](https://github.com/philhawthorne/ha-dockermon) running.  
   
 ***
