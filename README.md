@@ -31,8 +31,6 @@ key | description
   
 [Home-Assistant demo site.](https://ha-test-hadcokermon.halfdecent.io/)
   
-[Discuss this on the home-assistant forum](null)
-  
 To start using this make sure you have [ha-dockermon](https://github.com/philhawthorne/ha-dockermon) running.  
   
 ***
