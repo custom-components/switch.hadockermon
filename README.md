@@ -1,7 +1,6 @@
 # Custom_component for [ha-dockermon](https://github.com/philhawthorne/ha-dockermon)
   
-![Version](https://img.shields.io/badge/version-component_version'
-'2.0.2-green.svg?style=for-the-badge) ![mantained](https://img.shields.io/maintenance/yes/2018.svg?style=for-the-badge)   
+![Version](https://img.shields.io/badge/version-2.0.2-green.svg?style=for-the-badge) ![mantained](https://img.shields.io/maintenance/yes/2018.svg?style=for-the-badge)   
 A custom platform which allows you to interact with [ha-dockermon.](https://github.com/philhawthorne/ha-dockermon)
   
 To get started put `/custom_components/switch/hadockermon.py` here:  
@@ -32,7 +31,9 @@ key | description
   
 [Home-Assistant demo site.](https://ha-test-hadcokermon.halfdecent.io/)
   
+[Discuss this on the home-assistant forum](null)
+  
 To start using this make sure you have [ha-dockermon](https://github.com/philhawthorne/ha-dockermon) running.  
   
 ***
-Due to how `custom_componentes` are importerd, it is normal to see a `ModuleNotFoundError` error on first boot after adding this, to resolve it, restart Home-Assistant.
+Due to how `custom_componentes` are loaded, it is normal to see a `ModuleNotFoundError` error on first boot after adding this, to resolve it, restart Home-Assistant.
