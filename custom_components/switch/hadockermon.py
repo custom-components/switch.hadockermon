@@ -36,7 +36,7 @@ SCAN_INTERVAL = timedelta(seconds=60)
 
 ICON = 'mdi:docker'
 COMPONENT_NAME = 'hadockermon'
-COMPONENT_VERSION = '2.0.2'
+COMPONENT_VERSION = '2.0.3'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -72,7 +72,10 @@ def setup_platform(hass, config, add_devices_callback, discovery_info=None):
 class ContainerSwitch(SwitchDevice):
     def __init__(self, name, state, stats, host, port, dm, prefix):
         _slow_reported = True
-        self.entity_id = ENTITY_ID_FORMAT.format(slugify(prefix + name))
+        if prefix == 'None':
+            self.entity_id = ENTITY_ID_FORMAT.format(slugify(name))
+        else:
+            self.entity_id = ENTITY_ID_FORMAT.format(slugify(prefix + '_' + name))
         self._dm = dm
         self._state = False
         self._name = name
