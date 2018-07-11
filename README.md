@@ -1,12 +1,12 @@
 # Custom_component for [ha-dockermon](https://github.com/philhawthorne/ha-dockermon)
-  
-[![Version](https://img.shields.io/badge/version-2.0.3-green.svg?style=for-the-badge)](#) [![mantained](https://img.shields.io/maintenance/yes/2018.svg?style=for-the-badge)](#) [![maintainer](https://img.shields.io/badge/maintainer-Joakim%20Sørensen%20%40ludeeus-blue.svg?style=for-the-badge)](#)   
+
 A custom platform which allows you to interact with [ha-dockermon.](https://github.com/philhawthorne/ha-dockermon)
   
 To get started put `/custom_components/switch/hadockermon.py` here:  
 `<config directory>/custom_components/switch/hadockermon.py`  
   
 **Example configuration.yaml:**
+
 ```yaml
 switch:
   platform: hadockermon
@@ -18,6 +18,7 @@ switch:
     - 'NGINX'
     - 'ha-dockermon'
 ```
+
 **Configuration variables:**  
   
 key | description  
@@ -29,7 +30,8 @@ key | description
 **prefix (Optional)** | A string that will prefix the entity name, for easy sort and grouping.  
 **exclude (Optional)** | A list of Docker containers you want to exclude.  
   
-#### Sample overview
+## Sample overview
+
 ![Sample overview](overview.png)
   
 [Home-Assistant demo site.](https://ha-test-hadockermon.halfdecent.io/)
