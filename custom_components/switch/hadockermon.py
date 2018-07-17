@@ -15,6 +15,8 @@ from homeassistant.util import slugify
 from homeassistant.components.switch import (SwitchDevice,
     PLATFORM_SCHEMA, ENTITY_ID_FORMAT)
 
+__version__ = '2.0.5'
+
 REQUIREMENTS = ['pydockermon==0.0.1']
 
 CONF_HOST = 'host'
@@ -36,7 +38,6 @@ SCAN_INTERVAL = timedelta(seconds=60)
 
 ICON = 'mdi:docker'
 COMPONENT_NAME = 'hadockermon'
-COMPONENT_VERSION = '2.0.3'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -89,7 +90,7 @@ class ContainerSwitch(SwitchDevice):
         self._host = host
         self._port = port
         self._component = COMPONENT_NAME
-        self._componentversion = COMPONENT_VERSION
+        self._componentversion = __version__
 
     def update(self):
         containerstate = self._dm.getContainerState(self._name,
