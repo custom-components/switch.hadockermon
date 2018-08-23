@@ -40,3 +40,7 @@ To start using this make sure you have [ha-dockermon](https://github.com/philhaw
   
 ***
 Due to how `custom_componentes` are loaded, it is normal to see a `ModuleNotFoundError` error on first boot after adding this, to resolve it, restart Home-Assistant.
+
+***
+
+[buymeacoffee.com](https://www.buymeacoffee.com/ludeeus)
