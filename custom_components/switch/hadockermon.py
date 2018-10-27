@@ -17,7 +17,7 @@ from homeassistant.components.switch import (SwitchDevice,
 
 __version__ = '2.0.5'
 
-REQUIREMENTS = ['pydockermon==0.0.2']
+REQUIREMENTS = ['pydockermon==0.0.3']
 
 CONF_HOST = 'host'
 CONF_PORT = 'port'
