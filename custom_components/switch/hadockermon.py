@@ -15,7 +15,7 @@ from homeassistant.util import slugify
 from homeassistant.components.switch import (SwitchDevice,
     PLATFORM_SCHEMA, ENTITY_ID_FORMAT)
 
-__version__ = '2.0.5'
+__version__ = '2.0.6'
 
 REQUIREMENTS = ['pydockermon==0.0.1']
 
