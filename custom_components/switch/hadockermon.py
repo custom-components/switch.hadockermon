@@ -59,7 +59,7 @@ def setup_platform(hass, config, add_devices_callback, discovery_info=None):
     stats = config.get(CONF_STATS)
     prefix = config.get(CONF_PREFIX)
     dev = []
-    containers = dm.listContainers(host)
+    containers = dm.listContainers(host, port)
     if containers:
         for container in containers:
             containername = container['Names'][0][1:]
