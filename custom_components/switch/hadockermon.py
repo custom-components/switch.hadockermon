@@ -21,6 +21,8 @@ REQUIREMENTS = ['pydockermon==0.0.1']
 
 CONF_HOST = 'host'
 CONF_PORT = 'port'
+CONF_USERNAME = 'username'
+CONF_PASSWORD = 'password'
 CONF_STATS = 'stats'
 CONF_PREFIX = 'prefix'
 CONF_EXCLUDE = 'exclude'
@@ -44,6 +46,8 @@ _LOGGER = logging.getLogger(__name__)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
     vol.Optional(CONF_PORT, default='8126'): cv.string,
+    vol.Optional(CONF_USERNAME, default=''): cv.string,
+    vol.Optional(CONF_PASSWORD, default=''): cv.string,
     vol.Optional(CONF_STATS, default='False'): cv.string,
     vol.Optional(CONF_PREFIX, default='None'): cv.string,
     vol.Optional(CONF_EXCLUDE, default=None): 
@@ -55,23 +59,25 @@ def setup_platform(hass, config, add_devices_callback, discovery_info=None):
     dm = Dockermon()
     host = config.get(CONF_HOST)
     port = config.get(CONF_PORT)
+    username = config.get(CONF_USERNAME)
+    password = config.get(CONF_PASSWORD)
     exclude = config.get(CONF_EXCLUDE)
     stats = config.get(CONF_STATS)
     prefix = config.get(CONF_PREFIX)
     dev = []
-    containers = dm.listContainers(host, port)
+    containers = dm.listContainers(host, port, username, password)
     if containers:
         for container in containers:
             containername = container['Names'][0][1:]
             if containername not in exclude:
                 dev.append(ContainerSwitch(containername,
-                    False, stats, host, port , dm, prefix))
+                    False, stats, host, port, username, password, dm, prefix))
         add_devices_callback(dev, True)
     else:
         return False
 
 class ContainerSwitch(SwitchDevice):
-    def __init__(self, name, state, stats, host, port, dm, prefix):
+    def __init__(self, name, state, stats, host, port, username, password, dm, prefix):
         _slow_reported = True
         if prefix == 'None':
             self.entity_id = ENTITY_ID_FORMAT.format(slugify(name))
@@ -89,12 +95,14 @@ class ContainerSwitch(SwitchDevice):
         self._network_tx_total = None
         self._host = host
         self._port = port
+        self._username = username
+        self._password = password
         self._component = COMPONENT_NAME
         self._componentversion = __version__
 
     def update(self):
         containerstate = self._dm.getContainerState(self._name,
-            self._host, self._port)
+            self._host, self._port, self._username, self._password)
         if containerstate == False:
             self._state = False
         else:
@@ -104,7 +112,7 @@ class ContainerSwitch(SwitchDevice):
             if state == 'running':
                 if self._stats == 'True':
                     containerstats = self._dm.getContainerStats(self._name,
-                        self._host, self._port)
+                        self._host, self._port, self._username, self._password)
                     if containerstats == False:
                         return False
                     else:
@@ -181,7 +189,7 @@ class ContainerSwitch(SwitchDevice):
                 event_data={'domain': 'hassio','service': 'addon_start',
                     'service_data': {'addon': addon}})
         else:
-            command = self._dm.startContainer(self._name, self._host, self._port)
+            command = self._dm.startContainer(self._name, self._host, self._port, self._username, self._password)
             if command == False:
                 _LOGGER.error('Container failed to start.')
             else:
@@ -199,7 +207,7 @@ class ContainerSwitch(SwitchDevice):
                     'service_data': {'addon': addon}})
             self._state = False
         else:
-            command = self._dm.stopContainer(self._name, self._host, self._port)
+            command = self._dm.stopContainer(self._name, self._host, self._port, self._username, self._password)
             if command == False:
                 _LOGGER.error('Container failed to turn off.')
             else:
