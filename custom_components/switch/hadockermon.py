@@ -26,7 +26,7 @@ CONF_USERNAME = 'username'
 CONF_PASSWORD = 'password'
 CONF_STATS = 'stats'
 CONF_PREFIX = 'prefix'
-CONF_EXCLUDE = 'exclude'
+CONF_INCLUDE = 'include'
 
 ATTR_STATUS = 'status'
 ATTR_IMAGE = 'image'
@@ -46,7 +46,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_PASSWORD, default=None): cv.string,
     vol.Optional(CONF_STATS, default='False'): cv.string,
     vol.Optional(CONF_PREFIX, default='None'): cv.string,
-    vol.Optional(CONF_EXCLUDE, default=None): 
+    vol.Optional(CONF_INCLUDE, default=None): 
         vol.All(cv.ensure_list, [cv.string]),
 })
 
@@ -57,7 +57,7 @@ def setup_platform(hass, config, add_devices_callback, discovery_info=None):
     port = config.get(CONF_PORT)
     username = config.get(CONF_USERNAME)
     password = config.get(CONF_PASSWORD)
-    exclude = config.get(CONF_EXCLUDE)
+    include = config.get(CONF_INCLUDE)
     stats = config.get(CONF_STATS)
     prefix = config.get(CONF_PREFIX)
     dev = []
@@ -65,7 +65,7 @@ def setup_platform(hass, config, add_devices_callback, discovery_info=None):
 
     if containers:
         for container in containers['data']:
-            if container not in exclude:
+            if container in include or include is None:
                 dev.append(ContainerSwitch(container,
                     stats, host, port, username, password, dm, prefix))
         add_devices_callback(dev, True)
