@@ -42,8 +42,8 @@ _LOGGER = logging.getLogger(__name__)
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
     vol.Optional(CONF_PORT, default='8126'): cv.string,
-    vol.Optional(CONF_USERNAME, default=None): cv.string,
-    vol.Optional(CONF_PASSWORD, default=None): cv.string,
+    vol.Optional(CONF_USERNAME, default=''): cv.string,
+    vol.Optional(CONF_PASSWORD, default=''): cv.string,
     vol.Optional(CONF_STATS, default='False'): cv.string,
     vol.Optional(CONF_PREFIX, default='None'): cv.string,
     vol.Optional(CONF_INCLUDE, default=None): 
@@ -97,7 +97,7 @@ class ContainerSwitch(SwitchDevice):
     def update(self):
         containerstate = self._dm.get_container_state(self._name,
             self._host, self._port, self._username, self._password)
-        if containerstate['success']:
+        if not containerstate['success']:
             self._state = False
         else:
             data = containerstate['data']
@@ -108,7 +108,7 @@ class ContainerSwitch(SwitchDevice):
                 if self._stats == 'True':
                     containerstats = self._dm.get_container_stats(self._name,
                         self._host, self._port, self._username, self._password)
-                    if containerstats['success']:
+                    if not containerstats['success']:
                         return False
                     else:
                         data = containerstats['data']
