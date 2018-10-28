@@ -15,7 +15,7 @@ from homeassistant.util import slugify
 from homeassistant.components.switch import (SwitchDevice,
     PLATFORM_SCHEMA, ENTITY_ID_FORMAT)
 
-__version__ = '2.0.5'
+__version__ = '2.0.6'
 
 REQUIREMENTS = ['pydockermon==0.0.3']
 
@@ -66,6 +66,7 @@ def setup_platform(hass, config, add_devices_callback, discovery_info=None):
     prefix = config.get(CONF_PREFIX)
     dev = []
     containers = dm.listContainers(host, port, username, password)
+
     if containers:
         for container in containers:
             containername = container['Names'][0][1:]
