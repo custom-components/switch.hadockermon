@@ -1,9 +1,10 @@
 '''
 A component which allows you to interact with ha-dockermon.
-https://github.com/philhawthorne/ha-dockermon
+
+ha-dockermon: https://github.com/philhawthorne/ha-dockermon
 
 For more details about this component, please refer to the documentation at
-https://github.com/HalfDecent/HA-Custom_components/hadockermon
+https://github.com/custom-components/switch.hadockermon
 '''
 import logging
 import voluptuous as vol
@@ -15,63 +16,64 @@ from homeassistant.util import slugify
 from homeassistant.components.switch import (SwitchDevice,
     PLATFORM_SCHEMA, ENTITY_ID_FORMAT)
 
-__version__ = '2.0.6'
+__version__ = '2.1.0'
 
-REQUIREMENTS = ['pydockermon==0.0.1']
+REQUIREMENTS = ['pydockermon==0.1.2']
 
 CONF_HOST = 'host'
 CONF_PORT = 'port'
+CONF_USERNAME = 'username'
+CONF_PASSWORD = 'password'
 CONF_STATS = 'stats'
 CONF_PREFIX = 'prefix'
-CONF_EXCLUDE = 'exclude'
+CONF_INCLUDE = 'include'
 
 ATTR_STATUS = 'status'
 ATTR_IMAGE = 'image'
 ATTR_MEMORY = 'memory'
 ATTR_RX_TOTAL = 'network_rx_total'
 ATTR_TX_TOTAL = 'network_tx_total'
-ATTR_COMPONENT = 'component'
-ATTR_COMPONENT_VERSION = 'component_version'
 ATTR_FRIENDLY_NAME = 'friendly_name'
 
 SCAN_INTERVAL = timedelta(seconds=60)
-
-ICON = 'mdi:docker'
-COMPONENT_NAME = 'hadockermon'
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Required(CONF_HOST): cv.string,
     vol.Optional(CONF_PORT, default='8126'): cv.string,
+    vol.Optional(CONF_USERNAME, default=''): cv.string,
+    vol.Optional(CONF_PASSWORD, default=''): cv.string,
     vol.Optional(CONF_STATS, default='False'): cv.string,
     vol.Optional(CONF_PREFIX, default='None'): cv.string,
-    vol.Optional(CONF_EXCLUDE, default=None): 
+    vol.Optional(CONF_INCLUDE, default=None): 
         vol.All(cv.ensure_list, [cv.string]),
 })
 
 def setup_platform(hass, config, add_devices_callback, discovery_info=None):
-    from pydockermon import Dockermon
-    dm = Dockermon()
+    import pydockermon
+    dm = pydockermon
     host = config.get(CONF_HOST)
     port = config.get(CONF_PORT)
-    exclude = config.get(CONF_EXCLUDE)
+    username = config.get(CONF_USERNAME)
+    password = config.get(CONF_PASSWORD)
+    include = config.get(CONF_INCLUDE)
     stats = config.get(CONF_STATS)
     prefix = config.get(CONF_PREFIX)
     dev = []
-    containers = dm.listContainers(host, port)
+    containers = dm.list_containers(host, port, username, password)
+
     if containers:
-        for container in containers:
-            containername = container['Names'][0][1:]
-            if containername not in exclude:
-                dev.append(ContainerSwitch(containername,
-                    False, stats, host, port , dm, prefix))
+        for container in containers['data']:
+            if container in include or include is None:
+                dev.append(ContainerSwitch(container,
+                    stats, host, port, username, password, dm, prefix))
         add_devices_callback(dev, True)
     else:
         return False
 
 class ContainerSwitch(SwitchDevice):
-    def __init__(self, name, state, stats, host, port, dm, prefix):
+    def __init__(self, name, stats, host, port, username, password, dm, prefix):
         _slow_reported = True
         if prefix == 'None':
             self.entity_id = ENTITY_ID_FORMAT.format(slugify(name))
@@ -89,35 +91,37 @@ class ContainerSwitch(SwitchDevice):
         self._network_tx_total = None
         self._host = host
         self._port = port
-        self._component = COMPONENT_NAME
-        self._componentversion = __version__
+        self._username = username
+        self._password = password
 
     def update(self):
-        containerstate = self._dm.getContainerState(self._name,
-            self._host, self._port)
-        if containerstate == False:
+        containerstate = self._dm.get_container_state(self._name,
+            self._host, self._port, self._username, self._password)
+        if not containerstate['success']:
             self._state = False
         else:
-            state = containerstate['state']
-            self._status = containerstate['status']
-            self._image = containerstate['image']
+            data = containerstate['data']
+            state = data['state']
+            self._status = data['status']
+            self._image = data['image']
             if state == 'running':
                 if self._stats == 'True':
-                    containerstats = self._dm.getContainerStats(self._name,
-                        self._host, self._port)
-                    if containerstats == False:
+                    containerstats = self._dm.get_container_stats(self._name,
+                        self._host, self._port, self._username, self._password)
+                    if not containerstats['success']:
                         return False
                     else:
-                        get_memory = containerstats['memory_stats']
+                        data = containerstats['data']
+                        get_memory = data['memory_stats']
                         memory_usage = get_memory['usage']/1024/1024
                         try:
-                            containerstats['networks']
+                            data['networks']
                         except Exception:
                             self._network_rx_total = None
                             self._network_tx_total = None
                         else:
                             self._network_stats = 'aviable'
-                            netstats = containerstats['networks']['eth0']
+                            netstats = data['networks']['eth0']
                             network_rx_total = netstats['rx_bytes']/1024/1024
                             network_tx_total = netstats['tx_bytes']/1024/1024
                             self._network_rx_total = str(round(
@@ -140,7 +144,7 @@ class ContainerSwitch(SwitchDevice):
 
     @property
     def icon(self):
-        return ICON
+        return 'mdi:docker'
 
     @property
     def device_state_attributes(self):
@@ -150,24 +154,18 @@ class ContainerSwitch(SwitchDevice):
                 ATTR_IMAGE: self._image,
                 ATTR_MEMORY: self._memory_usage,
                 ATTR_RX_TOTAL: self._network_rx_total,
-                ATTR_TX_TOTAL: self._network_tx_total,
-                ATTR_COMPONENT: self._component,
-                ATTR_COMPONENT_VERSION: self._componentversion
+                ATTR_TX_TOTAL: self._network_tx_total
             }
         elif self._stats == 'True':
             return {
                 ATTR_STATUS: self._status,
                 ATTR_IMAGE: self._image,
-                ATTR_MEMORY: self._memory_usage,
-                ATTR_COMPONENT: self._component,
-                ATTR_COMPONENT_VERSION: self._componentversion
+                ATTR_MEMORY: self._memory_usage
             }
         else: 
             return {
                 ATTR_STATUS: self._status,
-                ATTR_IMAGE: self._image,
-                ATTR_COMPONENT: self._component,
-                ATTR_COMPONENT_VERSION: self._componentversion
+                ATTR_IMAGE: self._image
             }
             
     @property
@@ -181,7 +179,7 @@ class ContainerSwitch(SwitchDevice):
                 event_data={'domain': 'hassio','service': 'addon_start',
                     'service_data': {'addon': addon}})
         else:
-            command = self._dm.startContainer(self._name, self._host, self._port)
+            command = self._dm.start_container(self._name, self._host, self._port, self._username, self._password)
             if command == False:
                 _LOGGER.error('Container failed to start.')
             else:
@@ -199,7 +197,7 @@ class ContainerSwitch(SwitchDevice):
                     'service_data': {'addon': addon}})
             self._state = False
         else:
-            command = self._dm.stopContainer(self._name, self._host, self._port)
+            command = self._dm.stop_container(self._name, self._host, self._port, self._username, self._password)
             if command == False:
                 _LOGGER.error('Container failed to turn off.')
             else:
