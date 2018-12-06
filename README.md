@@ -14,9 +14,7 @@ switch:
   platform: hadockermon
   host: 192.168.1.50
   port: 8126
-  stats: true
-  prefix: hadockermon
-  exclude:
+  containers:
     - 'NGINX'
     - 'ha-dockermon'
 ```
@@ -28,9 +26,7 @@ key | description
 **platform (Required)** | The platform name.  
 **host (Required)** | The IP address of your Docker host running ha-dockermon.  
 **port (Optional)** | The port that the service is exposed on.  
-**stats (Optional)** | Show memory and network usage of the containers, this does _not_ work on every docker host.  
-**prefix (Optional)** | A string that will prefix the entity name, for easy sort and grouping.  
-**exclude (Optional)** | A list of Docker containers you want to exclude.  
+**containers (Optional)** | A list of containers you want to controll, by default it shows all.
   
 ## Sample overview
 
