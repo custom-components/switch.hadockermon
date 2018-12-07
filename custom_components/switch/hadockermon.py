@@ -17,7 +17,7 @@ from homeassistant.const import (CONF_HOST, CONF_PORT, CONF_NAME,
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-__version__ = '3.0.0'
+__version__ = '3.0.1'
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -63,7 +63,7 @@ async def async_setup_platform(hass, config, async_add_entities,
     for container in api.all_containers['data']:
         if not containers or container in containers:
             if not container.startswith("addon_"):
-                devices.append(HADockermonSwitch(api, device_name, container))
+                devices.append(HADockermonSwitch(api, device_name, container, host))
 
     async def restart_container(call):
         """Restart a container."""
@@ -80,7 +80,7 @@ async def async_setup_platform(hass, config, async_add_entities,
 class HADockermonSwitch(SwitchDevice):
     """Representation of a HA Dockermon switch."""
 
-    def __init__(self, api, device_name, container):
+    def __init__(self, api, device_name, container, host):
         """Initialize a HA Dockermon switch."""
         self.api = api
         self.device_name = device_name
@@ -88,6 +88,7 @@ class HADockermonSwitch(SwitchDevice):
         if not self.device_name:
             self.device_name = DEFAULT_NAME.format(self.container)
         self._state = None
+        self._host = host
         self._status = None
         self._image = None
 
@@ -137,4 +138,5 @@ class HADockermonSwitch(SwitchDevice):
         return {
             ATTR_STATUS: self._status,
             ATTR_IMAGE: self._image,
+            CONF_HOST: self._host,
         }
