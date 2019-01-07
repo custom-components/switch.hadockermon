@@ -83,10 +83,15 @@ class HADockermonSwitch(SwitchDevice):
     def __init__(self, api, device_name, container, host):
         """Initialize a HA Dockermon switch."""
         self.api = api
-        self.device_name = device_name
         self.container = container
-        if not self.device_name:
+        
+        if device_name and "{0}" in device_name:
+            self.device_name = device_name.format(self.container)
+        elif not device_name:
             self.device_name = DEFAULT_NAME.format(self.container)
+        else:
+            self.device_name = device_name
+        
         self._state = None
         self._host = host
         self._status = None
