@@ -22,7 +22,8 @@ __version__ = '3.0.1'
 _LOGGER = logging.getLogger(__name__)
 
 REQUIREMENTS = ['pydockermon==1.0.0']
-DEFAULT_NAME = 'HA Dockermon {0}'
+DEFAULT_NAME = 'HA Dockermon'
+CONTAINTER_NAME = '{} {}'
 
 CONF_CONTAINERS = 'containers'
 
@@ -85,12 +86,10 @@ class HADockermonSwitch(SwitchDevice):
         self.api = api
         self.container = container
         
-        if device_name and "{0}" in device_name:
-            self.device_name = device_name.format(self.container)
-        elif not device_name:
-            self.device_name = DEFAULT_NAME.format(self.container)
+        if device_name:
+            self.device_name = CONTAINTER_NAME.format(device_name, container)
         else:
-            self.device_name = device_name
+            self.device_name = CONTAINTER_NAME.format(DEFAULT_NAME, container)
         
         self._state = None
         self._host = host
