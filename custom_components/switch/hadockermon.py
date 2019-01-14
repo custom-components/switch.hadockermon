@@ -17,7 +17,7 @@ from homeassistant.const import (CONF_HOST, CONF_PORT, CONF_NAME,
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-__version__ = '3.0.1'
+__version__ = '3.1.0'
 
 _LOGGER = logging.getLogger(__name__)
 
