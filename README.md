@@ -26,11 +26,11 @@ key | description
 **platform (Required)** | The platform name.  
 **host (Required)** | The IP address of your Docker host running ha-dockermon.  
 **port (Optional)** | The port that the service is exposed on.  
-**containers (Optional)** | A list of containers you want to controll, by default it shows all.
+**containers (Optional)** | A list of containers you want to control, by default it shows all.
   
 ## Sample overview
 
-![Sample overview](overview.png)
+![Sample overview](example.png)
 
 **To start using this make sure you have [ha-dockermon][hadockermon] running.**  
 
