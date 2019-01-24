@@ -4,8 +4,8 @@ _Custom_component for [ha-dockermon.][hadockermon]_
 
 A custom platform which allows you to interact with [ha-dockermon.][hadockermon]
   
-To get started put `/custom_components/switch/hadockermon.py` here:  
-`<config directory>/custom_components/switch/hadockermon.py`  
+To get started put `/custom_components/hadockermon/switch.py` here:  
+`<config directory>/custom_components/hadockermon/switch.py`  
   
 **Example configuration.yaml:**
 
