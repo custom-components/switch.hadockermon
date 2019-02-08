@@ -51,7 +51,7 @@ async def async_setup_platform(hass, config, async_add_entities,
 
     host = config[CONF_HOST]
     port = config[CONF_PORT]
-    username = config.get(CONF_PASSWORD)
+    username = config.get(CONF_USERNAME)
     password = config.get(CONF_PASSWORD)
     ssl = config[CONF_SSL]
     verify_ssl = config[CONF_VERIFY_SSL]
