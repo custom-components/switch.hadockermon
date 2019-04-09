@@ -2,7 +2,7 @@
 Support for controlling HA Dockermon.
 
 For more details about this platform, please refer to the documentation at
-https://home-assistant.io/components/switch.hadockermon/
+https://github.com/custom-components/switch.hadockermon/
 """
 
 import logging
