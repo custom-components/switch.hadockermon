@@ -17,11 +17,10 @@ from homeassistant.const import (CONF_HOST, CONF_PORT, CONF_NAME,
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-__version__ = '3.1.0'
+__version__ = '3.1.1'
 
 _LOGGER = logging.getLogger(__name__)
 
-REQUIREMENTS = ['pydockermon==1.0.0']
 DEFAULT_NAME = 'HA Dockermon'
 CONTAINTER_NAME = '{} {}'
 
