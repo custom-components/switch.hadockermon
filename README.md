@@ -4,8 +4,8 @@ _Custom_component for [ha-dockermon.][hadockermon]_
 
 A custom platform which allows you to interact with [ha-dockermon.][hadockermon]
   
-To get started put `/custom_components/hadockermon/switch.py` here:  
-`<config directory>/custom_components/hadockermon/switch.py`  
+To get started put [`switch.py`](https://raw.githubusercontent.com/custom-components/switch.hadockermon/master/custom_components/hadockermon/switch.py), [`__init__.py`](https://raw.githubusercontent.com/custom-components/switch.hadockermon/master/custom_components/hadockermon/__init__.py) and [`manifest.json`](https://raw.githubusercontent.com/custom-components/switch.hadockermon/master/custom_components/hadockermon/manifest.json) from [`/custom_components/hadockermon/`](/custom_components/hadockermon) here:  
+`<config directory>/custom_components/hadockermon/switch.py`  	`<config directory>/custom_components/hadockermon/`
   
 **Example configuration.yaml:**
 
